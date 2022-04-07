@@ -1,5 +1,10 @@
 pipeline {
-
+    parameters {
+        string(name: 'branchName', defaultValue: 'main', description: 'Name of the branch which was build.')
+        string(name: 'sourceBranchName', defaultValue: 'test_branch', description: 'Name of the source branch which triggers PR build.')
+        string(name: 'param1', defaultValue: 'test_param', description: 'Test parameter 1')
+        string(name: 'param2', defaultValue: 'test_param', description: 'Test parameter 2')
+    }
     agent {
         node {
             label 'master'
@@ -21,6 +26,13 @@ pipeline {
                 sh """
                 echo "Cleaned Up Workspace For Project"
                 """
+            }
+        }
+        
+        stage('Prechecks') {
+            steps {
+                echo "branchName: ${branchName}"
+                echo "sourceBranchName: ${sourceBranchName}"
             }
         }
 
